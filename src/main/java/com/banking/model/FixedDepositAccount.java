@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import com.banking.exception.PrematureWithdrawalException;
 
 public class FixedDepositAccount extends Account {
 
@@ -30,9 +31,7 @@ public class FixedDepositAccount extends Account {
     @Override
     public void withdraw(BigDecimal amount) {
         if (LocalDate.now().isBefore(maturityDate)) {
-            throw new IllegalStateException(
-                "FD is locked until " + maturityDate
-            );
+           throw new PrematureWithdrawalException(maturityDate);
         }
         super.withdraw(amount);
     }

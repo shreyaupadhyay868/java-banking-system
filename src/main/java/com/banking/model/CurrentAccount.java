@@ -1,6 +1,8 @@
 package com.banking.model;
 
 import java.math.BigDecimal;
+import com.banking.exception.InvalidAmountException;
+import com.banking.exception.InsufficientFundsException;
 
 public class CurrentAccount extends Account {
 
@@ -15,13 +17,12 @@ public class CurrentAccount extends Account {
     @Override
     public void withdraw(BigDecimal amount) {
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Withdrawal amount must be positive");
+           throw new InvalidAmountException(amount);
         }
         BigDecimal effectiveLimit = getBalance().add(overdraftLimit);
         if (amount.compareTo(effectiveLimit) > 0) {
-            throw new IllegalStateException(
-                "Exceeds overdraft limit. Max withdrawable: " + effectiveLimit
-            );
+           
+       throw new InsufficientFundsException(getBalance(), amount);
         }
         deductBalance(amount);
     }

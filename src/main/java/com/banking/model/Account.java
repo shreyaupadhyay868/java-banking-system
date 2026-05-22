@@ -2,6 +2,8 @@ package com.banking.model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import com.banking.exception.InvalidAmountException;
+import com.banking.exception.InsufficientFundsException;
 
 public abstract class Account {
 
@@ -24,7 +26,8 @@ public abstract class Account {
 
     public void deposit(BigDecimal amount) {
     if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-        throw new IllegalArgumentException("Deposit amount must be positive");
+       throw new InvalidAmountException(amount);
+
     }
     this.balance = this.balance.add(amount).setScale(2, RoundingMode.HALF_UP);
     System.out.println("Deposited: " + amount + " | New Balance: " + this.balance);
@@ -32,10 +35,10 @@ public abstract class Account {
 
 public void withdraw(BigDecimal amount) {
     if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-        throw new IllegalArgumentException("Withdrawal amount must be positive");
+       throw new InvalidAmountException(amount);
     }
     if (amount.compareTo(this.balance) > 0) {
-        throw new IllegalStateException("Insufficient funds");
+       throw new InsufficientFundsException(getBalance(), amount);
     }
     this.balance = this.balance.subtract(amount).setScale(2, RoundingMode.HALF_UP);
     System.out.println("Withdrew: " + amount + " | New Balance: " + this.balance);

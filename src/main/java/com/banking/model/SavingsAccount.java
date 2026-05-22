@@ -3,6 +3,8 @@ package com.banking.model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import com.banking.exception.InvalidAmountException;
+import com.banking.exception.InsufficientFundsException;
 
 public class SavingsAccount extends Account {
 
@@ -22,13 +24,12 @@ public class SavingsAccount extends Account {
     @Override
     public void withdraw(BigDecimal amount) {
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Withdrawal amount must be positive");
+           throw new InvalidAmountException(amount); 
         }
         BigDecimal balanceAfter = getBalance().subtract(amount);
         if (balanceAfter.compareTo(MINIMUM_BALANCE) < 0) {
-            throw new IllegalStateException(
-                "Cannot go below minimum balance of 500.00"
-            );
+           throw new InsufficientFundsException(getBalance(), amount);
+            
         }
         super.withdraw(amount);
     }

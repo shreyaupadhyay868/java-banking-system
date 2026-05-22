@@ -6,6 +6,7 @@ import com.banking.model.FixedDepositAccount;
 import com.banking.model.SavingsAccount;
 
 import java.math.BigDecimal;
+import com.banking.exception.*;
 
 public class Main {
 
@@ -16,7 +17,11 @@ public class Main {
             "SAV001", "Shreya Upadhyay", new BigDecimal("5000.00"));
         savings.printStatement();
         savings.deposit(new BigDecimal("2000.00"));
-        savings.withdraw(new BigDecimal("1000.00"));
+        try{
+        savings.withdraw(new BigDecimal("9000.00"));
+        }  catch (InsufficientFundsException e) {
+        System.out.println("Caught: " + e.getMessage());
+               }
         System.out.println("Interest: " + savings.calculateInterest());
 
         System.out.println("\n=== CURRENT ACCOUNT ===");
@@ -32,6 +37,12 @@ public class Main {
         fd.printStatement();
         System.out.println("Interest: " + fd.calculateInterest());
         System.out.println("Maturity Date: " + fd.getMaturityDate());
+        System.out.println("\n[Testing PrematureWithdrawalException]");
+        try {
+            fd.withdraw(new BigDecimal("1000.00"));
+        } catch (PrematureWithdrawalException e) {
+            System.out.println("Caught: " + e.getMessage());
+        }
 
         System.out.println("\n=== POLYMORPHISM DEMO ===");
         Account[] accounts = { savings, current, fd };
