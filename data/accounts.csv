@@ -1,0 +1,4 @@
+type,accountNumber,accountHolder,balance
+Savings Account,SAV001,Shreya Upadhyay,6240.00
+Current Account,CUR001,Rahul Sharma,-2000.00
+Fixed Deposit Account,FD001,Priya Patel,50000.00

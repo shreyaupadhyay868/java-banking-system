@@ -5,8 +5,11 @@ import com.banking.model.Account;
 import com.banking.model.CurrentAccount;
 import com.banking.model.FixedDepositAccount;
 import com.banking.model.SavingsAccount;
+import com.banking.filehandler.FileHandler;
+
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class Main {
 
@@ -50,6 +53,18 @@ public class Main {
                 + " | " + account.getAccountHolder()
                 + " | Balance: " + account.getBalance()
                 + " | Interest: " + account.calculateInterest());
+
+                
         }
+        System.out.println("\n=== SAVING TO FILE ===");
+FileHandler.saveAccounts(bank.getAllAccounts());
+
+System.out.println("\n=== LOADING FROM FILE ===");
+List<Account> loaded = FileHandler.loadAccounts();
+for (Account a : loaded) {
+    System.out.println("Loaded: " + a.getAccountType() 
+        + " | " + a.getAccountHolder() 
+        + " | " + a.getBalance());
+}
     }
 }
